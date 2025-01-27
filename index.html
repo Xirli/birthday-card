@@ -15,6 +15,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
 
         .card {
@@ -79,19 +80,111 @@
             background: #ff7849;
         }
 
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: explode 2.5s ease-out forwards;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 16px;
+            background: red;
+            opacity: 0;
+            transform: rotate(0deg);
+            animation: drop 3.5s linear forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes drop {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(800px) rotate(360deg);
+            }
+        }
+
     </style>
 </head>
 <body>
     <div class="card">
-        <h1>Happy Birthday</h1>
-        <h1>Pecherskykh Andrii!</h1>
+        <h1>Happy Birthday, Andrey!</h1>
         <p>
             Wishing you a day filled with <span class="highlight">success</span>, joy, and all the things you love most! Your leadership inspires us every day, and we are so grateful to have you guiding this team to greatness.
         </p>
-        <a href="#" class="btn">Celebrate Now</a>
+        <button class="btn" onclick="celebrate()">Celebrate Now</button>
         <div class="footer">
             With warm regards, <br> Your IT Team
         </div>
     </div>
+
+    <script>
+        function getRandomColor() {
+            const colors = ['#FF5733', '#FFBD33', '#75FF33', '#33FF57', '#33FFBD', '#3375FF', '#7533FF', '#FF33BD'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function createFirework(x, y) {
+            for (let i = 0; i < 20; i++) {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                firework.style.background = getRandomColor();
+                firework.style.left = `${x}px`;
+                firework.style.top = `${y}px`;
+                firework.style.transform = `translate(-50%, -50%) scale(${Math.random() * 1.5})`;
+                firework.style.animationDelay = `${Math.random() * 0.5}s`;
+                document.body.appendChild(firework);
+
+                setTimeout(() => {
+                    firework.remove();
+                }, 2500);
+            }
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.background = getRandomColor();
+                confetti.style.left = `${Math.random() * window.innerWidth}px`;
+                confetti.style.top = `${-50}px`;
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                document.body.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3500);
+            }
+        }
+
+        function celebrate() {
+            createConfetti();
+            for (let i = 0; i < 10; i++) {
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                createFirework(x, y);
+            }
+        }
+    </script>
 </body>
 </html>
